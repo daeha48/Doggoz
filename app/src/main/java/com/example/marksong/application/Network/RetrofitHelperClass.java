@@ -1,5 +1,6 @@
 package com.example.marksong.application.Network;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import java.io.IOException;
@@ -19,8 +20,9 @@ public class RetrofitHelperClass {
     public static Retrofit getDogUrlInstance(){
         if (dogFit == null){
             dogFit = new retrofit2.Retrofit.Builder()
-                    .addConverterFactory(new NullOnEmptyConverterFactory())
                     .baseUrl(dogUrl)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addConverterFactory(new NullOnEmptyConverterFactory())
                     .build();
         }
         return dogFit;
@@ -33,7 +35,7 @@ public class RetrofitHelperClass {
             final Converter<ResponseBody, Object> delegate = retrofit.nextResponseBodyConverter(this, type, annotations);
             return new Converter<ResponseBody, Object>() {
                 @Override
-                public Object convert(ResponseBody value) throws IOException {
+                public Object convert(@NonNull ResponseBody value) throws IOException {
                     return value.contentLength() != 0 ? delegate.convert(value) : null;
                 }
             };

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.SurfaceTexture;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.support.customtabs.CustomTabsIntent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,14 +29,13 @@ public class MainActivity extends AppCompatActivity{
     private static final String TAG = MainActivity.class.getCanonicalName();
     private Button doggoBtn, openDoggoBtn;
     private String doggoUrlz;
-    private Boolean doggoIsRdy;
+    private Boolean doggoIsRdy = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initViews();
-        getDoggoUrl();
     }
 
     private void initViews(){
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 if (doggoIsRdy){
-
+                    openDuhDoggoUrl();
                 }
                 else {
                     Toast.makeText(getApplicationContext(), "Yo doggo iz not ready. Maybe get one first", Toast.LENGTH_SHORT).show();
@@ -87,7 +87,10 @@ public class MainActivity extends AppCompatActivity{
     }
 
     private void openDuhDoggoUrl(){
-        CustomTa
+        String url = doggoUrlz;
+        CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+        CustomTabsIntent customTabsIntent = builder.build();
+        customTabsIntent.launchUrl(this, Uri.parse(url));
     }
 
 }
